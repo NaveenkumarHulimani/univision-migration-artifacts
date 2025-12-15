@@ -1,0 +1,215 @@
+diff --git a/erpnext/accounts/doctype/gl_entry/gl_entry.py b/erpnext/accounts/doctype/gl_entry/gl_entry.py
+index 2243420f13..58469539b4 100644
+--- a/erpnext/accounts/doctype/gl_entry/gl_entry.py
++++ b/erpnext/accounts/doctype/gl_entry/gl_entry.py
+@@ -1,7 +1,6 @@
+ # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
+ # License: GNU General Public License v3. See license.txt
+ 
+-
+ import frappe
+ from frappe import _
+ from frappe.model.document import Document
+diff --git a/erpnext/setup/doctype/employee/employee.json b/erpnext/setup/doctype/employee/employee.json
+index 22c1ce7927..71805ea9c3 100644
+--- a/erpnext/setup/doctype/employee/employee.json
++++ b/erpnext/setup/doctype/employee/employee.json
+@@ -41,6 +41,7 @@
+   "branch",
+   "employment_details",
+   "scheduled_confirmation_date",
++  "offer_reference",
+   "column_break_32",
+   "final_confirmation_date",
+   "contract_end_date",
+@@ -815,6 +816,12 @@
+    "fieldname": "iban",
+    "fieldtype": "Data",
+    "label": "IBAN"
++  },
++  {
++   "fieldname": "offer_reference",
++   "fieldtype": "Link",
++   "label": "Offer Reference",
++   "options": "Job Offer"
+   }
+  ],
+  "icon": "fa fa-user",
+@@ -822,7 +829,7 @@
+  "image_field": "image",
+  "is_tree": 1,
+  "links": [],
+- "modified": "2025-02-07 13:54:40.122345",
++ "modified": "2025-11-07 11:45:12.854656",
+  "modified_by": "Administrator",
+  "module": "Setup",
+  "name": "Employee",
+@@ -864,8 +871,10 @@
+    "write": 1
+   }
+  ],
++ "row_format": "Dynamic",
+  "search_fields": "employee_name",
+  "show_name_in_global_search": 1,
++ "show_title_field_in_link": 1,
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": [],
+diff --git a/erpnext/setup/module_onboarding/home/home.json b/erpnext/setup/module_onboarding/home/home.json
+index 7b0d77ff50..bf22157ae0 100644
+--- a/erpnext/setup/module_onboarding/home/home.json
++++ b/erpnext/setup/module_onboarding/home/home.json
+@@ -25,7 +25,7 @@
+  "documentation_url": "https://docs.erpnext.com/docs/v14/user/manual/en/setting-up/company-setup",
+  "idx": 0,
+  "is_complete": 0,
+- "modified": "2023-05-23 13:20:19.703506",
++ "modified": "2025-11-11 11:17:11.580806",
+  "modified_by": "Administrator",
+  "module": "Setup",
+  "name": "Home",
+diff --git a/erpnext/setup/onboarding_step/create_a_customer/create_a_customer.json b/erpnext/setup/onboarding_step/create_a_customer/create_a_customer.json
+index dc07578122..6bd0bf266c 100644
+--- a/erpnext/setup/onboarding_step/create_a_customer/create_a_customer.json
++++ b/erpnext/setup/onboarding_step/create_a_customer/create_a_customer.json
+@@ -9,7 +9,7 @@
+  "is_complete": 0,
+  "is_single": 0,
+  "is_skipped": 0,
+- "modified": "2023-05-23 12:45:55.138580",
++ "modified": "2025-10-08 11:44:55.874985",
+  "modified_by": "Administrator",
+  "name": "Create a Customer",
+  "owner": "Administrator",
+diff --git a/erpnext/setup/onboarding_step/create_an_item/create_an_item.json b/erpnext/setup/onboarding_step/create_an_item/create_an_item.json
+index 66c5bfb961..7abf12de7f 100644
+--- a/erpnext/setup/onboarding_step/create_an_item/create_an_item.json
++++ b/erpnext/setup/onboarding_step/create_an_item/create_an_item.json
+@@ -11,7 +11,7 @@
+  "is_complete": 0,
+  "is_single": 0,
+  "is_skipped": 0,
+- "modified": "2023-05-23 12:43:08.484206",
++ "modified": "2025-09-11 16:23:11.723823",
+  "modified_by": "Administrator",
+  "name": "Create an Item",
+  "owner": "Administrator",
+@@ -20,4 +20,4 @@
+  "show_full_form": 0,
+  "title": "Create an Item",
+  "validate_action": 1
+-}
++}
+\ No newline at end of file
+diff --git a/erpnext/setup/onboarding_step/create_your_first_sales_invoice/create_your_first_sales_invoice.json b/erpnext/setup/onboarding_step/create_your_first_sales_invoice/create_your_first_sales_invoice.json
+index 96fa68e8c9..6c485cb2fb 100644
+--- a/erpnext/setup/onboarding_step/create_your_first_sales_invoice/create_your_first_sales_invoice.json
++++ b/erpnext/setup/onboarding_step/create_your_first_sales_invoice/create_your_first_sales_invoice.json
+@@ -8,7 +8,7 @@
+  "is_complete": 0,
+  "is_single": 0,
+  "is_skipped": 0,
+- "modified": "2023-05-22 21:20:15.589644",
++ "modified": "2025-10-08 11:44:57.278755",
+  "modified_by": "Administrator",
+  "name": "Create Your First Sales Invoice",
+  "owner": "Administrator",
+diff --git a/erpnext/setup/workspace/home/home.json b/erpnext/setup/workspace/home/home.json
+index 1fc1f787fb..dc2fcf780e 100644
+--- a/erpnext/setup/workspace/home/home.json
++++ b/erpnext/setup/workspace/home/home.json
+@@ -1,7 +1,7 @@
+ {
+  "charts": [],
+- "content": "[{\"id\":\"aCk49ShVRs\",\"type\":\"onboarding\",\"data\":{\"onboarding_name\":\"Home\",\"col\":12}},{\"id\":\"kb3XPLg8lb\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"nWd2KJPW8l\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"snrzfbFr5Y\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"id\":\"SHJKakmLLf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier\",\"col\":3}},{\"id\":\"CPxEyhaf3G\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"WU4F-HUcIQ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Leaderboard\",\"col\":3}},{\"id\":\"d_KVM1gsf9\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"JVu8-FJZCu\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"JiuSi0ubOg\",\"type\":\"card\",\"data\":{\"card_name\":\"Accounting\",\"col\":4}},{\"id\":\"ji2Jlm3Q8i\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock\",\"col\":4}},{\"id\":\"N61oiXpuwK\",\"type\":\"card\",\"data\":{\"card_name\":\"CRM\",\"col\":4}},{\"id\":\"6J0CVl1mPo\",\"type\":\"card\",\"data\":{\"card_name\":\"Data Import and Settings\",\"col\":4}}]",
+- "creation": "2020-01-23 13:46:38.833076",
++ "content": "[{\"id\": \"aCk49ShVRs\", \"type\": \"onboarding\", \"data\": {\"onboarding_name\": \"Home\", \"col\": 12}}, {\"id\": \"kb3XPLg8lb\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\", \"col\": 12}}, {\"id\": \"nWd2KJPW8l\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Item\", \"col\": 3}}, {\"id\": \"snrzfbFr5Y\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Customer\", \"col\": 3}}, {\"id\": \"SHJKakmLLf\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Supplier\", \"col\": 3}}, {\"id\": \"CPxEyhaf3G\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Sales Invoice\", \"col\": 3}}, {\"id\": \"d_KVM1gsf9\", \"type\": \"spacer\", \"data\": {\"col\": 12}}, {\"id\": \"JVu8-FJZCu\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\", \"col\": 12}}, {\"id\": \"JiuSi0ubOg\", \"type\": \"card\", \"data\": {\"card_name\": \"Accounting\", \"col\": 4}}, {\"id\": \"ji2Jlm3Q8i\", \"type\": \"card\", \"data\": {\"card_name\": \"Stock\", \"col\": 4}}, {\"id\": \"N61oiXpuwK\", \"type\": \"card\", \"data\": {\"card_name\": \"CRM\", \"col\": 4}}, {\"id\": \"6J0CVl1mPo\", \"type\": \"card\", \"data\": {\"card_name\": \"Data Import and Settings\", \"col\": 4}}]",
++ "creation": "2025-10-09 09:50:14.426544",
+  "custom_blocks": [],
+  "docstatus": 0,
+  "doctype": "Workspace",
+@@ -9,6 +9,7 @@
+  "hide_custom": 0,
+  "icon": "getting-started",
+  "idx": 0,
++ "indicator_color": "green",
+  "is_hidden": 0,
+  "label": "Home",
+  "links": [
+@@ -17,6 +18,7 @@
+    "is_query_report": 0,
+    "label": "Accounting",
+    "link_count": 0,
++   "link_type": "DocType",
+    "onboard": 0,
+    "type": "Card Break"
+   },
+@@ -69,6 +71,7 @@
+    "is_query_report": 0,
+    "label": "Stock",
+    "link_count": 0,
++   "link_type": "DocType",
+    "onboard": 0,
+    "type": "Card Break"
+   },
+@@ -132,6 +135,7 @@
+    "is_query_report": 0,
+    "label": "CRM",
+    "link_count": 0,
++   "link_type": "DocType",
+    "onboard": 0,
+    "type": "Card Break"
+   },
+@@ -173,6 +177,7 @@
+    "is_query_report": 0,
+    "label": "Data Import and Settings",
+    "link_count": 0,
++   "link_type": "DocType",
+    "onboard": 0,
+    "type": "Card Break"
+   },
+@@ -232,7 +237,7 @@
+    "type": "Link"
+   }
+  ],
+- "modified": "2023-05-24 14:47:18.765388",
++ "modified": "2025-10-09 09:50:14.426544",
+  "modified_by": "Administrator",
+  "module": "Setup",
+  "name": "Home",
+@@ -243,29 +248,34 @@
+  "quick_lists": [],
+  "restrict_to_domain": "",
+  "roles": [],
+- "sequence_id": 1.0,
++ "sequence_id": 3.0,
+  "shortcuts": [
+   {
++   "doc_view": "",
+    "label": "Item",
+    "link_to": "Item",
+    "type": "DocType"
+   },
+   {
++   "doc_view": "",
+    "label": "Customer",
+    "link_to": "Customer",
+    "type": "DocType"
+   },
+   {
++   "doc_view": "",
+    "label": "Supplier",
+    "link_to": "Supplier",
+    "type": "DocType"
+   },
+   {
++   "doc_view": "",
+    "label": "Sales Invoice",
+    "link_to": "Sales Invoice",
+    "type": "DocType"
+   },
+   {
++   "doc_view": "",
+    "label": "Leaderboard",
+    "link_to": "leaderboard",
+    "type": "Page"
